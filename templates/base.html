@@ -1,12 +1,11 @@
 {% load static %}
 
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{% static 'MoodApp/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'MoodApp/css/styles.css' %}" />
     <title>
       {% block title %}
         MissingTitle
@@ -15,10 +14,18 @@
   </head>
   <body>
     <nav>
-      <h1 >MoodApp</h1>
-      <ul >
-        <li> <a href="{% url 'Home' %}"> Home </a> </li>
-        <li> <a href="{% url 'About' %}"> About</a> </li>
+      <div class="header_logo_section">
+        {% comment %} Generated w/ ChatGPT {% endcomment %}
+        <img class="header_logo" src="{% static 'MoodApp/images/logo_basic.png' %}" alt="Book with An Emotion Scale In It" style="width: 10%;" />
+        <h1>MoodApp</h1>
+      </div>
+        <ul>
+        <li>
+          <a href="{% url 'Home' %}">Home</a>
+        </li>
+        <li>
+          <a href="{% url 'About' %}">About</a>
+        </li>
       </ul>
     </nav>
     <main>
