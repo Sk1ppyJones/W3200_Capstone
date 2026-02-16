@@ -1,0 +1,15 @@
+{% block title %}
+  {{ entry.title }}
+{% endblock %}
+
+{% block content %}
+  <h1>{{ entry.title }}</h1>
+  <p>
+    <strong>Date:</strong> {{ entry.entryDate }}
+  </p>
+  <hr />
+  <p>{{ entry.entryText }}</p>
+  <p>
+    <a href="{% url 'Home' %}">Back</a>
+  </p>
+{% endblock %}

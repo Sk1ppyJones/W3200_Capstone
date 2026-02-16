@@ -5,6 +5,15 @@
 {% endblock %}
 
 {% block content %}
-  <h1>Temporary Content</h1>
-  <h2>Index Page</h2>
+  <h1>Journal Entries</h1>
+
+  <ul>
+    {% for entry in entries %}
+      <li>
+        <a href="{{ entry.get_absolute_url }}">{{ entry.entryDate }} — {{ entry.title }}</a>
+      </li>
+    {% empty %}
+      <li>No journal entries yet.</li>
+    {% endfor %}
+  </ul>
 {% endblock %}
