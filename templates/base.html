@@ -1,38 +1,78 @@
 {% load static %}
+{% load django_bootstrap5 %}
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{% static 'MoodApp/css/styles.css' %}" />
+
     <title>
       {% block title %}
-        MissingTitle
+        QuestBoard
       {% endblock %}
     </title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="{% static 'QuestBoardApp/styles.css' %}" />
   </head>
-  <body>
-    <nav>
-      <div class="header_logo_section">
-        {% comment %} Generated w/ ChatGPT {% endcomment %}
-        <img class="header_logo" src="{% static 'MoodApp/images/logo_basic.png' %}" alt="Book with An Emotion Scale In It" style="width: 10%;" />
-        <h1>MoodApp</h1>
+
+  <body class="d-flex flex-column min-vh-100">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+      <div class="container">
+        <!-- Logo + Brand -->
+        <a class="navbar-brand d-flex align-items-center" href="{% url 'index' %}">
+          <img src="{% static 'QuestBoardApp/logo_no_text.png' %}" alt="QuestBoard Logo" height="70" class="me-2" />
+          <span class="fw-bold">QuestBoard</span>
+        </a>
+
+        <!-- Mobile toggle -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+
+        <!-- Nav Links -->
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'index' %}">Home</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="#">About</a>
+            </li>
+
+            {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="#">My Quests</a>
+              </li>
+              <li class="nav-item">
+                {% comment %} <a class="nav-link" href="{% url 'logout' %}">Logout</a> {% endcomment %}
+              </li>
+            {% else %}
+              <li class="nav-item">
+                {% comment %} <a class="nav-link" href="{% url 'login' %}">Login</a> {% endcomment %}
+              </li>
+            {% endif %}
+          </ul>
+        </div>
       </div>
-        <ul>
-        <li>
-          <a href="{% url 'Home' %}">Home</a>
-        </li>
-        <li>
-          <a href="{% url 'About' %}">About</a>
-        </li>
-      </ul>
     </nav>
-    <main>
+
+    <!-- Main Content -->
+    <main class="container my-5 flex-grow-1">
       {% block content %}
 
       {% endblock %}
     </main>
-    <footer>&copy; Casey Jones</footer>
+
+    <!-- Footer -->
+    <footer class="text-center py-3 mt-auto border-top">
+      <small>&copy; {{ now|date:'Y' }} Casey Jones</small>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

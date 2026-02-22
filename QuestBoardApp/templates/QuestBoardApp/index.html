@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}QuestBoard - Home{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Quests</h1>
+
+{% if quests %}
+  <div class="row g-3">
+    {% for quest in quests %}
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">{{ quest.title }}</h5>
+            <p class="card-text small text-muted mb-2">
+              By <strong>{{ quest.creator }}</strong>
+              {% if quest.parent %}
+                <span class="ms-1">(Remix of: {{ quest.parent.title }})</span>
+              {% endif %}
+            </p>
+
+            <p class="card-text">{{ quest.description|truncatechars:140 }}</p>
+
+            <div class="mb-2">
+              {% for tag in quest.tags.all %}
+                <span class="badge text-bg-secondary">{{ tag.name }}</span>
+              {% empty %}
+                <span class="text-muted small">No tags</span>
+              {% endfor %}
+            </div>
+
+            <p class="text-muted small mb-0">
+              Steps: {{ quest.steps.count }}
+            </p>
+          </div>
+          <div class="card-footer bg-white">
+            <small class="text-muted">Created: {{ quest.created_at|date:"M d, Y" }}</small>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p>No quests found.</p>
+{% endif %}
+{% endblock %}

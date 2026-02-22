@@ -1,0 +1,46 @@
+type,team_name,team_owner,username,quest_title,completed,xp_earned,step_order,submission_text,approved
+TEAM,Iron Vanguard,ironwarden,,,,,,,
+TEAM,Crimson Path,scarletstride,,,,,,,
+
+TEAM_MEMBER,Iron Vanguard,,ironwarden,,,,,,,
+TEAM_MEMBER,Iron Vanguard,,emberblade,,,,,,,
+TEAM_MEMBER,Iron Vanguard,,stoneguard,,,,,,,
+
+TEAM_MEMBER,Crimson Path,,scarletstride,,,,,,,
+TEAM_MEMBER,Crimson Path,,pyrewatcher,,,,,,,
+TEAM_MEMBER,Crimson Path,,ashrider,,,,,,,
+
+PARTICIPATION,,,ashrider,Emberlight Challenge,1,5,,,
+PARTICIPATION,,,pyrewatcher,Emberlight Challenge,0,5,,,
+PARTICIPATION,,,emberblade,Emberlight Challenge,0,5,,,
+
+PARTICIPATION,,,ironwarden,Vanguard Tactical Drill,1,5,,,
+PARTICIPATION,,,stoneguard,Vanguard Tactical Drill,0,5,,,
+PARTICIPATION,,,emberblade,Vanguard Tactical Drill,0,5,,,
+
+PARTICIPATION,,,scarletstride,Watchtower Redux,1,5,,,
+PARTICIPATION,,,ashrider,Watchtower Redux,0,5,,,
+
+SUBMISSION,,,ashrider,Emberlight Challenge,,,1,"Went to the student union and took notes on the environment.",1
+SUBMISSION,,,ashrider,Emberlight Challenge,,,2,"Wrote a short scene about a traveler arriving at dusk.",1
+SUBMISSION,,,ashrider,Emberlight Challenge,,,3,"Submitted within the time limit and reflected on the mood.",1
+
+SUBMISSION,,,pyrewatcher,Emberlight Challenge,,,1,"Traveled to a new spot off campus (park) and observed details.",0
+SUBMISSION,,,pyrewatcher,Emberlight Challenge,,,2,"Drafted a 100-word scene about a campfire and quiet footsteps.",0
+SUBMISSION,,,pyrewatcher,Emberlight Challenge,,,3,"Submitted late; needs review.",0
+
+SUBMISSION,,,ironwarden,Vanguard Tactical Drill,,,1,"Formed team: ironwarden, emberblade, stoneguard.",1
+SUBMISSION,,,ironwarden,Vanguard Tactical Drill,,,2,"Action plan: assign roles, set checkpoints, define success criteria.",1
+SUBMISSION,,,ironwarden,Vanguard Tactical Drill,,,3,"Summary: plan complete; next time improve communication timing.",1
+
+SUBMISSION,,,stoneguard,Vanguard Tactical Drill,,,1,"Team formed successfully and roles were discussed briefly.",0
+SUBMISSION,,,stoneguard,Vanguard Tactical Drill,,,2,"Plan: keep tasks simple and track progress in steps.",0
+SUBMISSION,,,stoneguard,Vanguard Tactical Drill,,,3,"Summary submitted; waiting for approval.",0
+
+SUBMISSION,,,scarletstride,Watchtower Redux,,,1,"Visited a historical building and noted design details.",1
+SUBMISSION,,,scarletstride,Watchtower Redux,,,2,"Created a short poem inspired by the location.",1
+SUBMISSION,,,scarletstride,Watchtower Redux,,,3,"Reflection: the setting influenced the tone and imagery.",1
+
+SUBMISSION,,,ashrider,Watchtower Redux,,,1,"Went to a historical spot and took a quick photo.",0
+SUBMISSION,,,ashrider,Watchtower Redux,,,2,"Created a short sketch and wrote a 2-sentence description.",0
+SUBMISSION,,,ashrider,Watchtower Redux,,,3,"Reflection submitted; pending review.",0

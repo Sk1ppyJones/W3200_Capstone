@@ -1,0 +1,67 @@
+/* =========================
+   TAVERN THEME PALETTE
+   ========================= */
+
+:root {
+    /* Core Colors */
+    --bs-primary: #8b5e3c;        /* warm wood brown */
+    --bs-secondary: #5c3a21;      /* dark oak */
+    --bs-success: #6c8b3c;        /* muted moss */
+    --bs-danger: #9c2f2f;         /* deep red */
+    --bs-warning: #c99a2e;        /* golden amber */
+    --bs-info: #7b6a4f;           /* muted brass */
+    --bs-light: #f3e5c8;          /* parchment */
+    --bs-dark: #2c1b12;           /* tavern shadow */
+
+    /* Background Overrides */
+    --bs-body-bg: #f3e5c8;
+    --bs-body-color: #2c1b12;
+
+    --bs-border-color: #c4a373;
+}
+
+
+/* =========================
+   GLOBAL STYLING
+   ========================= */
+
+body {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    font-family: "Georgia", serif;
+    background-image: url('/static/QuestBoardApp/parchment-paper.png');
+    background-size: cover;
+}
+
+/* Navbar override */
+.navbar {
+    background-color: #5c3a21 !important;
+}
+
+/* Card styling */
+.card {
+    background-color: #fff8e7;
+    border: 1px solid #c4a373;
+    border-radius: 8px;
+}
+
+.card-title {
+    font-weight: bold;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #8b5e3c;
+    border-color: #8b5e3c;
+}
+
+.btn-primary:hover {
+    background-color: #6f4a2f;
+    border-color: #6f4a2f;
+}
+
+/* Footer */
+footer {
+    background-color: #5c3a21;
+    color: #f3e5c8;
+}
