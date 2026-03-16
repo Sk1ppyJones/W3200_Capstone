@@ -8,6 +8,7 @@ from .models import (
     Team,
     TeamMembership,
     Submission,
+    Feedback,
 )
 
 
@@ -74,3 +75,9 @@ class SubmissionAdmin(admin.ModelAdmin):
     list_display = ("id", "participation", "step", "approved", "submitted_at")
     list_filter = ("approved", "submitted_at")
     search_fields = ("participation__user__username", "participation__quest__title", "step__quest__title")
+    
+@admin.register(Feedback)
+class FeedbackAdmin(admin.ModelAdmin):
+    list_display = ("id", "user_name", "email", "subject", "submitted_at")
+    list_filter = ("submitted_at",)
+    search_fields = ("user_name", "email", "subject", "message")

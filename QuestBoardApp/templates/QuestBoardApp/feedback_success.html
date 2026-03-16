@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Thank You{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Thank You</h1>
+    <p>Your feedback has been submitted successfully.</p>
+    <a href="{% url 'index' %}" class="btn btn-primary">Return Home</a>
+</div>
+{% endblock %}
