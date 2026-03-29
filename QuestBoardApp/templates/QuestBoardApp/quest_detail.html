@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}{{ quest.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>
+        {{ quest.title }}
+        {% if quest.id in favorites %}
+            <span>⭐</span>
+        {% endif %}
+    </h1>
+
+    {% if quest.image %}
+        <img src="{{ quest.image.url }}" alt="{{ quest.title }}" class="img-fluid rounded mb-4">
+    {% endif %}
+
+    <p>{{ quest.description }}</p>
+
+    <p><strong>Creator:</strong> {{ quest.creator }}</p>
+
+    {% if quest.parent %}
+        <p><strong>Parent Quest:</strong> {{ quest.parent.title }}</p>
+    {% endif %}
+
+    <h3 class="mt-4">Steps</h3>
+    <ul>
+        {% for step in quest.steps.all %}
+            <li>Step {{ step.order }}: {{ step.instruction }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3 class="mt-4">Tags</h3>
+    <div class="mb-3">
+        {% for tag in quest.tags.all %}
+            <span class="badge bg-secondary">{{ tag.name }}</span>
+        {% empty %}
+            <span class="text-muted">No tags</span>
+        {% endfor %}
+    </div>
+
+    <a href="{% url 'toggle_favorite' quest.pk %}" class="btn btn-primary">Toggle Favorite</a>
+</div>
+{% endblock %}

@@ -81,3 +81,4 @@ class FeedbackAdmin(admin.ModelAdmin):
     list_display = ("id", "user_name", "email", "subject", "submitted_at")
     list_filter = ("submitted_at",)
     search_fields = ("user_name", "email", "subject", "message")
+    

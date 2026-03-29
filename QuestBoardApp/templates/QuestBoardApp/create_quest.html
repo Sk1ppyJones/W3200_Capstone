@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Create Quest
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h1 class="mb-4">Create a Quest</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <h3 class="mb-3">Quest Details</h3>
+      {% for field in form %}
+        <div class="mb-3">
+          <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+
+          {% if field.errors %}
+            <div class="text-danger small mt-1">
+              {% for error in field.errors %}
+                <div>{{ error }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+      <h3 class="mt-4 mb-3">Quest Steps</h3>
+
+      {{ formset.management_form }}
+
+      {% for step_form in formset %}
+        <div class="card mb-3 p-3">
+          <h5>Step {{ forloop.counter }}</h5>
+
+          {% for hidden_field in step_form.hidden_fields %}
+            {{ hidden_field }}
+          {% endfor %}
+
+          {% for field in step_form.visible_fields %}
+            <div class="mb-3">
+              {{ field }}
+
+              {% if field.errors %}
+                <div class="text-danger small mt-1">
+                  {% for error in field.errors %}
+                    <div>{{ error }}</div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary">Save Quest</button>
+    </form>
+  </div>
+{% endblock %}

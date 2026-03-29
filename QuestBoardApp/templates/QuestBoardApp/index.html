@@ -1,46 +1,62 @@
 {% extends "base.html" %}
 
-{% block title %}QuestBoard - Home{% endblock %}
+{% block title %}QuestBoard{% endblock %}
 
 {% block content %}
-<h1 class="mb-4">Quests</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Quest Listings</h1>
+    <a href="{% url 'create_quest' %}" class="btn btn-primary">Add Quest</a>
+</div>
 
-{% if quests %}
-  <div class="row g-3">
+<div class="row g-4">
     {% for quest in quests %}
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title">{{ quest.title }}</h5>
-            <p class="card-text small text-muted mb-2">
-              By <strong>{{ quest.creator }}</strong>
-              {% if quest.parent %}
-                <span class="ms-1">(Remix of: {{ quest.parent.title }})</span>
-              {% endif %}
-            </p>
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
 
-            <p class="card-text">{{ quest.description|truncatechars:140 }}</p>
+                {% if quest.image %}
+                    <img src="{{ quest.image.url }}" class="card-img-top" alt="{{ quest.title }}">
+                {% endif %}
 
-            <div class="mb-2">
-              {% for tag in quest.tags.all %}
-                <span class="badge text-bg-secondary">{{ tag.name }}</span>
-              {% empty %}
-                <span class="text-muted small">No tags</span>
-              {% endfor %}
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{% url 'quest_detail' quest.pk %}" class="text-decoration-none">
+                            {{ quest.title }}
+                        </a>
+
+                        {% if quest.id in favorites %}
+                            <span>⭐</span>
+                        {% endif %}
+                    </h5>
+
+                    <p class="card-text">
+                        {{ quest.description|truncatechars:100 }}
+                    </p>
+
+                    <p class="small text-muted mb-1">
+                        Creator: {{ quest.creator }}
+                    </p>
+
+                    <p class="small text-muted mb-2">
+                        Steps: {{ quest.steps.count }}
+                    </p>
+
+                    <div class="mb-2">
+                        {% for tag in quest.tags.all %}
+                            <span class="badge bg-secondary">{{ tag.name }}</span>
+                        {% empty %}
+                            <span class="text-muted small">No tags</span>
+                        {% endfor %}
+                    </div>
+
+                    <a href="{% url 'toggle_favorite' quest.pk %}"
+                       class="btn btn-sm btn-outline-dark">
+                        Toggle Favorite
+                    </a>
+                </div>
             </div>
-
-            <p class="text-muted small mb-0">
-              Steps: {{ quest.steps.count }}
-            </p>
-          </div>
-          <div class="card-footer bg-white">
-            <small class="text-muted">Created: {{ quest.created_at|date:"M d, Y" }}</small>
-          </div>
         </div>
-      </div>
+    {% empty %}
+        <p>No quests found.</p>
     {% endfor %}
-  </div>
-{% else %}
-  <p>No quests found.</p>
-{% endif %}
+</div>
 {% endblock %}

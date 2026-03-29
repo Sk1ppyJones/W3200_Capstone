@@ -38,6 +38,7 @@ class Quest(models.Model):
 
     title = models.CharField(max_length=120)
     description = models.TextField()
+    image = models.ImageField(upload_to="quest_images/", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     tags = models.ManyToManyField(Tag, blank=True, related_name="quests")
