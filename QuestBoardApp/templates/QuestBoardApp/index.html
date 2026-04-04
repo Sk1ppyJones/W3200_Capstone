@@ -1,62 +1,70 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
-{% block title %}QuestBoard{% endblock %}
+{% block title %}
+  QuestBoard
+{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Quest Listings</h1>
     <a href="{% url 'create_quest' %}" class="btn btn-primary">Add Quest</a>
-</div>
+  </div>
 
-<div class="row g-4">
+  <div class="row g-4">
     {% for quest in quests %}
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm">
+      <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+          {% if quest.image %}
+            <img src="{{ quest.image.url }}" class="card-img-top" alt="{{ quest.title }}" />
+          {% endif %}
 
-                {% if quest.image %}
-                    <img src="{{ quest.image.url }}" class="card-img-top" alt="{{ quest.title }}">
-                {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">
+              <a href="{% url 'quest_detail' quest.pk %}" class="text-decoration-none">{{ quest.title }}</a>
 
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <a href="{% url 'quest_detail' quest.pk %}" class="text-decoration-none">
-                            {{ quest.title }}
-                        </a>
+              {% if user.is_authenticated and user == quest.creator %}
+                <span class="badge bg-warning text-dark ms-2">Your Quest</span>
+              {% endif %}
 
-                        {% if quest.id in favorites %}
-                            <span>⭐</span>
-                        {% endif %}
-                    </h5>
+              {% if quest.id in favorites %}
+                <span>⭐</span>
+              {% endif %}
+            </h5>
 
-                    <p class="card-text">
-                        {{ quest.description|truncatechars:100 }}
-                    </p>
+            <p class="card-text">{{ quest.description|truncatechars:100 }}</p>
 
-                    <p class="small text-muted mb-1">
-                        Creator: {{ quest.creator }}
-                    </p>
+            <p class="small text-muted mb-1">Creator: {{ quest.creator }}</p>
 
-                    <p class="small text-muted mb-2">
-                        Steps: {{ quest.steps.count }}
-                    </p>
+            <p class="small text-muted mb-2">Steps: {{ quest.steps.count }}</p>
 
-                    <div class="mb-2">
-                        {% for tag in quest.tags.all %}
-                            <span class="badge bg-secondary">{{ tag.name }}</span>
-                        {% empty %}
-                            <span class="text-muted small">No tags</span>
-                        {% endfor %}
-                    </div>
-
-                    <a href="{% url 'toggle_favorite' quest.pk %}"
-                       class="btn btn-sm btn-outline-dark">
-                        Toggle Favorite
-                    </a>
-                </div>
+            <div class="mb-2">
+              {% for tag in quest.tags.all %}
+                <span class="badge bg-secondary">{{ tag.name }}</span>
+              {% empty %}
+                <span class="text-muted small">No tags</span>
+              {% endfor %}
             </div>
+
+            {% if quest.id in favorites %}
+              <a href="{% url 'toggle_favorite' quest.pk %}" class="btn btn-sm btn-warning">★ Favorited</a>
+            {% else %}
+              <a href="{% url 'toggle_favorite' quest.pk %}" class="btn btn-sm btn-outline-dark">☆ Favorite</a>
+            {% endif %}
+          </div>
         </div>
+      </div>
     {% empty %}
-        <p>No quests found.</p>
+      <div class="col-12">
+        <div class="card p-4 text-center shadow-sm">
+          <h4>No quests yet.</h4>
+          <p class="mb-3">Be the first to add a quest to the board.</p>
+          {% if user.is_authenticated %}
+            <a href="{% url 'create_quest' %}" class="btn btn-primary">Create First Quest</a>
+          {% else %}
+            <a href="{% url 'login' %}" class="btn btn-primary">Log In to Create a Quest</a>
+          {% endif %}
+        </div>
+      </div>
     {% endfor %}
-</div>
+  </div>
 {% endblock %}

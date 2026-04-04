@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Quest
-from .forms import FeedbackForm, QuestForm, QuestStepFormSet
+from .forms import FeedbackForm, QuestForm, QuestStepFormSet, SignUpForm
 from django.views.generic import ListView, DetailView
 
 
@@ -61,6 +63,10 @@ def create_quest(request):
 
 
 class QuestListView(ListView):
+    """
+    Display all quests in a gallery-style list on the home page.
+    Also passes session-based favorites into the template.
+    """
     model = Quest
     template_name = "QuestBoardApp/index.html"
     context_object_name = "quests"
@@ -73,6 +79,10 @@ class QuestListView(ListView):
 
 
 class QuestDetailView(DetailView):
+    """
+    Display one quest with its full description, image, tags, and steps.
+    Also shows whether the quest is favorited in the current session.
+    """
     model = Quest
     template_name = "QuestBoardApp/quest_detail.html"
     context_object_name = "quest"
@@ -81,6 +91,44 @@ class QuestDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context["favorites"] = self.request.session.get("favorites", [])
         return context
+
+
+@login_required
+def create_quest(request):
+    if request.method == "POST":
+        form = QuestForm(request.POST, request.FILES)
+        formset = QuestStepFormSet(request.POST)
+
+        if form.is_valid() and formset.is_valid():
+            quest = form.save(commit=False)
+            quest.creator = request.user
+            quest.save()
+            form.save_m2m()
+
+            step_forms = formset.save(commit=False)
+            for index, step in enumerate(step_forms, start=1):
+                if step.instruction.strip():
+                    step.quest = quest
+                    step.order = index
+                    step.save()
+
+            return HttpResponseRedirect(reverse("index"))
+    else:
+        form = QuestForm()
+        formset = QuestStepFormSet()
+
+    return render(request, "QuestBoardApp/create_quest.html", {
+        "form": form,
+        "formset": formset,
+    })
+    
+class MyQuestListView(LoginRequiredMixin, ListView):
+    model = Quest
+    template_name = "QuestBoardApp/my_quests.html"
+    context_object_name = "quests"
+
+    def get_queryset(self):
+        return Quest.objects.filter(creator=self.request.user).order_by("-created_at")
 
 
 def toggle_favorite(request, pk):
@@ -92,5 +140,19 @@ def toggle_favorite(request, pk):
         favorites.append(pk)
 
     request.session["favorites"] = favorites
+    request.session.modified = True
 
     return HttpResponseRedirect(request.META.get("HTTP_REFERER", reverse("index")))
+
+
+def signup_view(request):
+    if request.method == "POST":
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return HttpResponseRedirect(reverse("index"))
+    else:
+        form = SignUpForm()
+
+    return render(request, "registration/signup.html", {"form": form})
