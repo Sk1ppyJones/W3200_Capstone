@@ -1,0 +1,7 @@
+.quest-detail-card img {
+    object-fit: cover;
+}
+
+.quest-detail-card .btn {
+    min-width: 170px;
+}

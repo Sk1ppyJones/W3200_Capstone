@@ -1,17 +1,22 @@
-/* =========================
-   TAVERN THEME PALETTE
-   ========================= */
-
+/*TAVERN THEME PALETTE*/
 :root {
     /* Core Colors */
-    --bs-primary: #8b5e3c;        /* warm wood brown */
-    --bs-secondary: #5c3a21;      /* dark oak */
-    --bs-success: #6c8b3c;        /* muted moss */
-    --bs-danger: #9c2f2f;         /* deep red */
-    --bs-warning: #c99a2e;        /* golden amber */
-    --bs-info: #7b6a4f;           /* muted brass */
-    --bs-light: #f3e5c8;          /* parchment */
-    --bs-dark: #2c1b12;           /* tavern shadow */
+    --bs-primary: #8b5e3c;
+    /* warm wood brown */
+    --bs-secondary: #5c3a21;
+    /* dark oak */
+    --bs-success: #6c8b3c;
+    /* muted moss */
+    --bs-danger: #9c2f2f;
+    /* deep red */
+    --bs-warning: #c99a2e;
+    /* golden amber */
+    --bs-info: #7b6a4f;
+    /* muted brass */
+    --bs-light: #f3e5c8;
+    /* parchment */
+    --bs-dark: #2c1b12;
+    /* tavern shadow */
 
     /* Background Overrides */
     --bs-body-bg: #f3e5c8;
@@ -21,9 +26,7 @@
 }
 
 
-/* =========================
-   GLOBAL STYLING
-   ========================= */
+/*GLOBAL STYLING */
 
 body {
     background-color: var(--bs-body-bg);
@@ -49,6 +52,15 @@ body {
     font-weight: bold;
 }
 
+.card-img-top {
+    height: 220px;
+    object-fit: cover;
+}
+
+.quest-card-title a {
+    color: inherit;
+}
+
 /* Buttons */
 .btn-primary {
     background-color: #8b5e3c;
@@ -58,6 +70,38 @@ body {
 .btn-primary:hover {
     background-color: #6f4a2f;
     border-color: #6f4a2f;
+}
+
+/* Badge styling */
+.badge {
+    font-size: 0.8em;
+    padding: 0.25em 0.5em;
+    border-radius: 4px;
+}
+
+.exploration {
+    background-color: #6c8b3c;
+    color: #f3e5c8;
+}
+
+.timed {
+    background-color: #9c2f2f;
+    color: #f3e5c8;
+}
+
+.creative {
+    background-color: #c99a2e;
+    color: #f3e5c8;
+}
+
+.strategy {
+    background-color: #4f507b;
+    color: #f3e5c8;
+}
+
+.collaboration {
+    background-color: #8d5b7a;
+    color: #f3e5c8;
 }
 
 /* Footer */

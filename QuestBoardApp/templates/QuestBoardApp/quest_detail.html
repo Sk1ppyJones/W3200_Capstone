@@ -5,51 +5,88 @@
 {% endblock %}
 
 {% block content %}
-  <div class="container mt-4">
-    <h1>
-      {{ quest.title }}
-
-      {% if user.is_authenticated and user == quest.creator %}
-        <span class="badge bg-warning text-dark ms-2">Your Quest</span>
+  <div class="card shadow-sm overflow-hidden mt-4 quest-detail-card">
+    <div class="row g-0">
+      {% if quest.image %}
+        <div class="col-lg-5">
+          <img src="{{ quest.image.url }}" alt="{{ quest.title }}" class="img-fluid h-100 w-100" />
+        </div>
       {% endif %}
 
-      {% if quest.id in favorites %}
-        <span>⭐</span>
-      {% endif %}
-    </h1>
+      <div class="col">
+        <div class="card-body p-4">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-3">
+            <div>
+              <h1 class="card-title fs-2 mb-2">{{ quest.title }}</h1>
+              <div class="d-flex flex-wrap gap-2">
+                {% if user.is_authenticated and user == quest.creator %}
+                  <span class="badge bg-warning text-dark">Your Quest</span>
+                {% endif %}
+                {% if quest.id in favorites %}
+                  <span class="badge bg-warning">Favorited</span>
+                {% endif %}
+              </div>
+            </div>
+            <a href="{% url 'index' %}" class="btn btn-outline-secondary btn-sm">Back to quests</a>
+          </div>
 
-    {% if quest.image %}
-      <img src="{{ quest.image.url }}" alt="{{ quest.title }}" class="img-fluid rounded mb-4" />
-    {% endif %}
+          <p class="lead text-secondary">{{ quest.description }}</p>
 
-    <p>{{ quest.description }}</p>
+          <div class="row row-cols-1 row-cols-md-2 g-3 mb-4">
+            <div class="col">
+              <div class="bg-light rounded-3 p-3 h-100">
+                <p class="mb-1 text-uppercase text-muted small">Creator</p>
+                <p class="mb-0 fw-semibold">{{ quest.creator }}</p>
+              </div>
+            </div>
+            {% if quest.parent %}
+              <div class="col">
+                <div class="bg-light rounded-3 p-3 h-100">
+                  <p class="mb-1 text-uppercase text-muted small">Parent quest</p>
+                  <p class="mb-0 fw-semibold">{{ quest.parent.title }}</p>
+                </div>
+              </div>
+            {% endif %}
+          </div>
 
-    <p>
-      <strong>Creator:</strong> {{ quest.creator }}
-    </p>
+          <div class="mb-4">
+            <h3 class="h5 mb-3">Steps</h3>
+            {% if quest.steps.all %}
+              <ol class="list-group list-group-numbered">
+                {% for step in quest.steps.all %}
+                  <li class="list-group-item">{{ step.instruction }}</li>
+                {% endfor %}
+              </ol>
+            {% else %}
+              <p class="text-muted mb-0">No steps have been added yet.</p>
+            {% endif %}
+          </div>
 
-    {% if quest.parent %}
-      <p>
-        <strong>Parent Quest:</strong> {{ quest.parent.title }}
-      </p>
-    {% endif %}
+          <div class="mb-4">
+            <h3 class="h5 mb-3">Tags</h3>
+            {% if quest.tags.all %}
+              <div class="d-flex flex-wrap gap-2">
+                {% for tag in quest.tags.all %}
+                  <span class="badge {{ tag.name|lower }}">{{ tag.name }}</span>
+                {% endfor %}
+              </div>
+            {% else %}
+              <span class="text-muted">No tags</span>
+            {% endif %}
+          </div>
 
-    <h3 class="mt-4">Steps</h3>
-    <ul>
-      {% for step in quest.steps.all %}
-        <li>Step {{ step.order }}: {{ step.instruction }}</li>
-      {% endfor %}
-    </ul>
-
-    <h3 class="mt-4">Tags</h3>
-    <div class="mb-3">
-      {% for tag in quest.tags.all %}
-        <span class="badge bg-secondary">{{ tag.name }}</span>
-      {% empty %}
-        <span class="text-muted">No tags</span>
-      {% endfor %}
+          <div class="d-flex flex-wrap gap-2">
+            <a href="{% url 'toggle_favorite' quest.pk %}" class="btn btn-primary">
+              {% if quest.id in favorites %}
+                Remove favorite
+              {% else %}
+                Add to favorites
+              {% endif %}
+            </a>
+            <a href="{% url 'index' %}" class="btn btn-outline-secondary">Browse more quests</a>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <a href="{% url 'toggle_favorite' quest.pk %}" class="btn btn-primary">Toggle Favorite</a>
   </div>
 {% endblock %}
