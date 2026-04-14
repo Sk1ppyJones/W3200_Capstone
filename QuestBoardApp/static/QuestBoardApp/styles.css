@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Macondo&display=swap');
+
 /*TAVERN THEME PALETTE*/
 :root {
     /* Core Colors */
@@ -31,9 +33,10 @@
 body {
     background-color: var(--bs-body-bg);
     color: var(--bs-body-color);
-    font-family: "Georgia", serif;
     background-image: url('/static/QuestBoardApp/parchment-paper.png');
-    background-size: cover;
+    background-size: contain;
+    font-family: "Macondo", cursive;
+    font-weight: 700;
 }
 
 /* Navbar override */

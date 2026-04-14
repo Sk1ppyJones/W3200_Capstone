@@ -3,11 +3,11 @@ from . import views
 
 urlpatterns = [
     path("", views.QuestListView.as_view(), name="index"),
-    path("feedback/", views.feedback_view, name="feedback"),
-    path("feedback/success/", views.feedback_success, name="feedback_success"),
-    path("quests/new/", views.create_quest, name="create_quest"),
+    path("feedback/", views.FeedbackView.as_view(), name="feedback"),
+    path("feedback/success/", views.FeedbackSuccessView.as_view(), name="feedback_success"),
+    path("quests/new/", views.CreateQuestView, name="create_quest"),
     path("quests/<int:pk>/", views.QuestDetailView.as_view(), name="quest_detail"),
-    path("quests/<int:pk>/favorite/", views.toggle_favorite, name="toggle_favorite"),
+    path("quests/<int:pk>/favorite/", views.ToggleFavoriteView, name="toggle_favorite"),
     path("my-quests/", views.MyQuestListView.as_view(), name="my_quests"),
-    path("signup/", views.signup_view, name="signup"),
+    path("signup/", views.SignUpView.as_view(), name="signup"),
 ]

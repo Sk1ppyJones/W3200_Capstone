@@ -6,60 +6,18 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Quest
 from .forms import FeedbackForm, QuestForm, QuestStepFormSet, SignUpForm
-from django.views.generic import ListView, DetailView
+from django.views.generic import FormView, ListView, DetailView, TemplateView
 
 
-def index(request):
-    quests = (
-        Quest.objects
-        .select_related("creator", "parent")
-        .prefetch_related("tags", "steps")
-        .order_by("-created_at")
-    )
-    return render(request, "QuestBoardApp/index.html", {"quests": quests})
-
-
-def feedback_view(request):
-    if request.method == "POST":
-        form = FeedbackForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse("feedback_success"))
-    else:
-        form = FeedbackForm()
-
-    return render(request, "QuestBoardApp/feedback.html", {"form": form})
-
-
-def feedback_success(request):
-    return render(request, "QuestBoardApp/feedback_success.html")
-
-
-def create_quest(request):
-    if request.method == "POST":
-        form = QuestForm(request.POST, request.FILES)
-        formset = QuestStepFormSet(request.POST)
-
-        if form.is_valid() and formset.is_valid():
-            quest = form.save()
-
-            step_forms = formset.save(commit=False)
-
-            for index, step in enumerate(step_forms, start=1):
-                if step.instruction.strip():
-                    step.quest = quest
-                    step.order = index
-                    step.save()
-
-            return HttpResponseRedirect(reverse("index"))
-    else:
-        form = QuestForm()
-        formset = QuestStepFormSet()
-
-    return render(request, "QuestBoardApp/create_quest.html", {
-        "form": form,
-        "formset": formset,
-    })
+class FeedbackView(FormView):
+    """View for feedback form"""
+    template_name = "QuestBoardApp/feedback.html"
+    form_class = FeedbackForm
+    success_url = "/feedback/success/"
+    
+class FeedbackSuccessView(TemplateView):
+    """View that tells user theyve submitted feedback"""
+    template_name = "QuestBoardApp/feedback_success.html"
 
 
 class QuestListView(ListView):
@@ -94,7 +52,10 @@ class QuestDetailView(DetailView):
 
 
 @login_required
-def create_quest(request):
+def CreateQuestView(request):
+    """
+    Provides the routing for creating quests and the associated form
+    """
     if request.method == "POST":
         form = QuestForm(request.POST, request.FILES)
         formset = QuestStepFormSet(request.POST)
@@ -123,6 +84,7 @@ def create_quest(request):
     })
     
 class MyQuestListView(LoginRequiredMixin, ListView):
+    """View that displays the quests the logged in user has created."""
     model = Quest
     template_name = "QuestBoardApp/my_quests.html"
     context_object_name = "quests"
@@ -131,7 +93,8 @@ class MyQuestListView(LoginRequiredMixin, ListView):
         return Quest.objects.filter(creator=self.request.user).order_by("-created_at")
 
 
-def toggle_favorite(request, pk):
+def ToggleFavoriteView(request, pk):
+    """Toggle the favorite status of a quest for the current session."""
     favorites = request.session.get("favorites", [])
 
     if pk in favorites:
@@ -144,15 +107,20 @@ def toggle_favorite(request, pk):
 
     return HttpResponseRedirect(request.META.get("HTTP_REFERER", reverse("index")))
 
+class SignUpView(FormView):
+    """View for the signup form, and to log the user in immediately after signing up."""
+    template_name = "registration/signup.html"
+    form_class = SignUpForm
+    success_url = "/"
+# def signup_view(request):
+#     """View used for the signup form, and to log the user in immediately after signing up."""
+#     if request.method == "POST":
+#         form = SignUpForm(request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             login(request, user)
+#             return HttpResponseRedirect(reverse("index"))
+#     else:
+#         form = SignUpForm()
 
-def signup_view(request):
-    if request.method == "POST":
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return HttpResponseRedirect(reverse("index"))
-    else:
-        form = SignUpForm()
-
-    return render(request, "registration/signup.html", {"form": form})
+#     return render(request, "registration/signup.html", {"form": form})
