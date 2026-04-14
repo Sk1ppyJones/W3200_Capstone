@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+  <h1>My Team</h1>
+
+  {% if membership %}
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h4>
+          <a href="{% url 'team_detail' membership.team.pk %}">{{ membership.team.name }}</a>
+        </h4>
+        <p>{{ membership.team.description|default:"No description yet." }}</p>
+        <p class="text-muted mb-0">Joined: {{ membership.joined_at }}</p>
+      </div>
+    </div>
+  {% else %}
+    <p>You have not joined a team yet.</p>
+    <a href="{% url 'team_list' %}" class="btn btn-primary">Browse Teams</a>
+  {% endif %}
+</div>
+{% endblock %}

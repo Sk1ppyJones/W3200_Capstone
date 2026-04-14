@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+  <h1>{{ team.name }}</h1>
+  <p class="text-muted">Owner: {{ team.owner.username }}</p>
+  <p>{{ team.description|default:"No description yet." }}</p>
+
+  {% if user.is_authenticated %}
+    {% if is_member %}
+      {% if not is_owner %}
+        <form method="post" action="{% url 'leave_team' team.pk %}" class="mb-3">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-outline-danger">Leave Team</button>
+        </form>
+      {% else %}
+        <p class="fw-semibold">You own this team.</p>
+      {% endif %}
+    {% else %}
+      {% if current_membership %}
+        <div class="alert alert-warning">
+          You are currently a member of <strong>{{ current_membership.team.name }}</strong>.
+          Leave that team before joining another.
+        </div>
+      {% else %}
+        <form method="post" action="{% url 'join_team' team.pk %}" class="mb-3">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-primary">Join Team</button>
+        </form>
+      {% endif %}
+    {% endif %}
+  {% endif %}
+
+  <h3 class="mt-4">Members</h3>
+  {% if memberships %}
+    <ul class="list-group">
+      {% for membership in memberships %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span>{{ membership.user.username }}</span>
+          {% if membership.user_id == team.owner_id %}
+            <span class="badge text-bg-warning">Owner</span>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No members yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -8,7 +8,7 @@
   <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-3 mt-0">
     <div>
       <h1 class="fs-1 mb-0">QuestBoard</h1>
-      <p class=" mb-0">Discover community-created quests, save favorites, and start your next adventure.</p>
+      <p class="mb-0">Discover community-created quests, save favorites, and start your next adventure.</p>
     </div>
     <div class="d-flex gap-2 align-self-center">
       {% if user.is_authenticated %}
@@ -24,7 +24,7 @@
       <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-3">
         <div>
           <h2 class="h2 mb-1">Favorite Quests</h2>
-          <p class=" mb-0">Quick access to your bookmarked adventures.</p>
+          <p class="mb-0">Quick access to your bookmarked adventures.</p>
         </div>
       </div>
 
@@ -45,21 +45,30 @@
                     {% endif %}
                   </div>
 
-                  <p class="card-text  mb-3">{{ quest.description|truncatechars:110 }}</p>
+                  <p class="card-text mb-3">{{ quest.description|truncatechars:110 }}</p>
 
                   <div class="mt-auto">
-                    <p class="small  mb-1">Creator: {{ quest.creator }}</p>
-                    <p class="small  mb-2">Steps: {{ quest.steps.count }}</p>
+                    <p class="small mb-1">Creator: {{ quest.creator }}</p>
+                    <p class="small mb-2">Steps: {{ quest.steps.count }}</p>
 
                     <div class="mb-3">
                       {% for tag in quest.tags.all %}
                         <span class="badge {{ tag.name|lower }}">{{ tag.name }}</span>
                       {% empty %}
-                        <span class=" small">No tags</span>
+                        <span class="small">No tags</span>
                       {% endfor %}
                     </div>
 
-                    <a href="{% url 'toggle_favorite' quest.pk %}" class="btn btn-sm btn-warning">★ Favorited</a>
+                    <form method="post" action="{% url 'toggle_favorite' quest.pk %}">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-sm btn-outline-warning">
+                        {% if quest.pk in favorites %}
+                          Remove Favorite
+                        {% else %}
+                          Add Favorite
+                        {% endif %}
+                      </button>
+                    </form>
                   </div>
                 </div>
               </div>
@@ -94,25 +103,30 @@
                 {% endif %}
               </div>
 
-              <p class="card-text  mb-3">{{ quest.description|truncatechars:100 }}</p>
+              <p class="card-text mb-3">{{ quest.description|truncatechars:100 }}</p>
 
               <div class="mt-auto">
-                <p class="small  mb-1">Creator: {{ quest.creator }}</p>
-                <p class="small  mb-2">Steps: {{ quest.steps.count }}</p>
+                <p class="small mb-1">Creator: {{ quest.creator }}</p>
+                <p class="small mb-2">Steps: {{ quest.steps.count }}</p>
 
                 <div class="mb-3">
                   {% for tag in quest.tags.all %}
                     <span class="badge {{ tag.name|lower }}">{{ tag.name }}</span>
                   {% empty %}
-                    <span class=" small">No tags</span>
+                    <span class="small">No tags</span>
                   {% endfor %}
                 </div>
 
-                {% if quest.id in favorites %}
-                  <a href="{% url 'toggle_favorite' quest.pk %}" class="btn btn-sm btn-warning">★ Favorited</a>
-                {% else %}
-                  <a href="{% url 'toggle_favorite' quest.pk %}" class="btn btn-sm btn-outline-dark">☆ Favorite</a>
-                {% endif %}
+                <form method="post" action="{% url 'toggle_favorite' quest.pk %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-sm btn-outline-warning">
+                    {% if quest.pk in favorites %}
+                      Remove Favorite
+                    {% else %}
+                      Add Favorite
+                    {% endif %}
+                  </button>
+                </form>
               </div>
             </div>
           </div>

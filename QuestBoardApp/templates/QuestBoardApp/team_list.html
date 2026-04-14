@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+  <h1>Teams</h1>
+
+  {% if user.is_authenticated %}
+    <a href="{% url 'create_team' %}" class="btn btn-primary mb-3">Create Team</a>
+  {% endif %}
+
+  {% if teams %}
+    <ul class="list-group">
+      {% for team in teams %}
+        <li class="list-group-item">
+          <a href="{% url 'team_detail' team.pk %}">{{ team.name }}</a>
+          <div class="small text-muted">
+            Owner: {{ team.owner.username }} |
+            Members: {{ team.members.count }}
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No teams exist yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

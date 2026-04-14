@@ -44,11 +44,16 @@
                 {% endfor %}
               </div>
 
-              {% if quest.id in favorites %}
-                <a href="{% url 'toggle_favorite' quest.pk %}" class="btn btn-sm btn-warning">★ Favorited</a>
-              {% else %}
-                <a href="{% url 'toggle_favorite' quest.pk %}" class="btn btn-sm btn-outline-dark">☆ Favorite</a>
-              {% endif %}
+              <form method="post" action="{% url 'toggle_favorite' quest.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm btn-outline-warning">
+                  {% if quest.pk in favorites %}
+                    Remove Favorite
+                  {% else %}
+                    Add Favorite
+                  {% endif %}
+                </button>
+              </form>
             </div>
           </div>
         </div>

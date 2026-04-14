@@ -1,15 +1,15 @@
+import os
+
 from django import forms
 from django.forms import inlineformset_factory
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from .models import Quest, QuestStep, Feedback
+from .models import Quest, QuestStep, Feedback, Team
 
 
-# =========================
 # QUEST FORM
-# =========================
 class QuestForm(forms.ModelForm):
     class Meta:
         model = Quest
@@ -33,14 +33,22 @@ class QuestForm(forms.ModelForm):
         image = self.cleaned_data.get("image")
         if image:
             valid_types = ["image/jpeg", "image/png", "image/webp"]
+            valid_extensions = [".jpg", ".jpeg", ".png", ".webp"]
+            max_size = 2 * 1024 * 1024  # 2MB
+            
             if hasattr(image, "content_type") and image.content_type not in valid_types:
                 raise ValidationError("Only JPG, PNG, or WEBP images are allowed.")
+            
+            ext = os.path.splittext(image.name)[1].lower()
+            if ext not in valid_extensions:
+                raise ValidationError("Invalid file extension. Only .jpg, .jpeg, .png, or .webp are allowed.")
+            
+            if image.size > max_size:
+                raise ValidationError("File size exceeds the limit of 2MB.")
         return image
 
 
-# =========================
 # QUEST STEP FORM + FORMSET
-# =========================
 class QuestStepForm(forms.ModelForm):
     class Meta:
         model = QuestStep
@@ -62,9 +70,7 @@ QuestStepFormSet = inlineformset_factory(
 )
 
 
-# =========================
 # FEEDBACK FORM (OLD FEATURE)
-# =========================
 class FeedbackForm(forms.ModelForm):
     class Meta:
         model = Feedback
@@ -83,9 +89,7 @@ class FeedbackForm(forms.ModelForm):
         }
 
 
-# =========================
 # AUTH (SIGNUP)
-# =========================
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(
         required=True,
@@ -97,4 +101,19 @@ class SignUpForm(UserCreationForm):
         fields = ["username", "email", "password1", "password2"]
         widgets = {
             "username": forms.TextInput(attrs={"class": "form-control"}),
+        }
+        
+
+# Team Creation
+class TeamForm(forms.ModelForm):
+    class Meta:
+        model = Team
+        fields = ["name", "description"]
+        labels = {
+            "name": "Team Name",
+            "description": "Team Description",
+        }
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control"}),
+            "description": forms.Textarea(attrs={"class": "form-control", "rows": 4}),
         }

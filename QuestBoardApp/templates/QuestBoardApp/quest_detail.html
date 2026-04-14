@@ -76,13 +76,16 @@
           </div>
 
           <div class="d-flex flex-wrap gap-2">
-            <a href="{% url 'toggle_favorite' quest.pk %}" class="btn btn-primary">
-              {% if quest.id in favorites %}
-                Remove favorite
-              {% else %}
-                Add to favorites
-              {% endif %}
-            </a>
+            <form method="post" action="{% url 'toggle_favorite' quest.pk %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-sm btn-outline-warning">
+                {% if quest.pk in favorites %}
+                  Remove Favorite
+                {% else %}
+                  Add Favorite
+                {% endif %}
+              </button>
+            </form>
             <a href="{% url 'index' %}" class="btn btn-outline-secondary">Browse more quests</a>
           </div>
         </div>
