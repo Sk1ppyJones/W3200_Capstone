@@ -1,7 +1,7 @@
 databases:
-  - name: QuestBoardDB
+  - name: questboarddb
     plan: free
-    databaseName: QuestBoard
+    databaseName: questboard
     user: caseyjonesadmin
 
 services:
