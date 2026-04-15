@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}
+  User Leaderboard
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="mb-1">User Leaderboard</h1>
+      <p class="text-muted mb-0">Ranked by total XP earned from quest participation.</p>
+    </div>
+    <a href="{% url 'team_leaderboard' %}" class="btn btn-outline-secondary">
+      View Team Leaderboard
+    </a>
+  </div>
+
+  {% if users %}
+    <div class="card shadow-sm">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th scope="col">Rank</th>
+              <th scope="col">User</th>
+              <th scope="col">XP</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for leaderboard_user in users %}
+              <tr>
+                <td><strong>#{{ forloop.counter }}</strong></td>
+                <td>{{ leaderboard_user.username }}</td>
+                <td>{{ leaderboard_user.total_xp|default:0 }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% else %}
+    <p class="text-muted">No users have earned any XP yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

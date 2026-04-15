@@ -88,7 +88,7 @@ class Participation(models.Model):
             models.UniqueConstraint(fields=["quest", "user"], name="unique_participation")]
 
     def __str__(self):
-        return f"{self.user} in {self.quest}"
+        return f"{self.user.username} in {self.quest}"
 
 
 # 6. Teams (Many-to-Many THROUGH)
@@ -100,6 +100,7 @@ class Team(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     members = models.ManyToManyField(
         User, through="TeamMembership", related_name="teams")
+    points = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.name
@@ -132,12 +133,17 @@ class Submission(models.Model):
 
     approved = models.BooleanField(default=False)
     
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["participation", "step"], name="unique_submission_per_step")
+        ]
+    
     def clean(self):
         if self.step.quest_id != self.participation.quest_id:
             raise ValidationError("Submission step must belong to the same quest as the participation.")
 
     def __str__(self):
-        return f"Submission for {self.step}"
+        return f"{self.participation.user.username} - {self.step}"
 
 
 class Feedback(models.Model):

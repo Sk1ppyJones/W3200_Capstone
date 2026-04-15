@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Team Leaderboard
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="mb-1">Team Leaderboard</h1>
+      <p class="text-muted mb-0">Current standings by total team points.</p>
+    </div>
+    <a href="{% url 'user_leaderboard' %}" class="btn btn-outline-secondary">
+      View User Leaderboard
+    </a>
+  </div>
+
+  {% if teams %}
+    <div class="card shadow-sm">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th scope="col">Rank</th>
+              <th scope="col">Team</th>
+              <th scope="col">Owner</th>
+              <th scope="col">Points</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for team in teams %}
+              <tr>
+                <td><strong>#{{ forloop.counter }}</strong></td>
+                <td>
+                  <a href="{% url 'team_detail' team.pk %}" class="fw-semibold text-decoration-none">
+                    {{ team.name }}
+                  </a>
+                </td>
+                <td>{{ team.owner.username }}</td>
+                <td>{{ team.points }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% else %}
+    <p class="text-muted">No teams have been created yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

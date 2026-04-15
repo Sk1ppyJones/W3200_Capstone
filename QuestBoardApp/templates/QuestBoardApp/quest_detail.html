@@ -51,10 +51,24 @@
 
           <div class="mb-4">
             <h3 class="h5 mb-3">Steps</h3>
+
             {% if quest.steps.all %}
               <ol class="list-group list-group-numbered">
                 {% for step in quest.steps.all %}
-                  <li class="list-group-item">{{ step.instruction }}</li>
+                  <li class="list-group-item d-flex gap-1 align-items-center">
+                    <div>{{ step.instruction }}</div>
+
+                    {% if user.is_authenticated and participation %}
+                      {% if step.id in completed_step_ids %}
+                        <span class="badge bg-success">Completed</span>
+                      {% else %}
+                        <form method="post" action="{% url 'submit_step' quest.pk step.pk %}">
+                          {% csrf_token %}
+                          <button type="submit" class="btn btn-sm btn-outline-primary">Complete Step</button>
+                        </form>
+                      {% endif %}
+                    {% endif %}
+                  </li>
                 {% endfor %}
               </ol>
             {% else %}
@@ -78,7 +92,7 @@
           <div class="d-flex flex-wrap gap-2">
             <form method="post" action="{% url 'toggle_favorite' quest.pk %}">
               {% csrf_token %}
-              <button type="submit" class="btn btn-sm btn-outline-warning">
+              <button type="submit" class="btn btn-outline-warning">
                 {% if quest.pk in favorites %}
                   Remove Favorite
                 {% else %}
@@ -86,6 +100,18 @@
                 {% endif %}
               </button>
             </form>
+            {% if user.is_authenticated %}
+              {% if not participation %}
+                <form method="post" action="{% url 'start_quest' quest.pk %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-outline-primary">Start Quest</button>
+                </form>
+              {% elif not participation.completed %}
+                <button type="submit" class="btn btn-primary">Quest In Progress</button>
+              {% else %}
+                <button type="submit" class="btn btn-success">Quest Completed</button>
+              {% endif %}
+            {% endif %}
             <a href="{% url 'index' %}" class="btn btn-outline-secondary">Browse more quests</a>
           </div>
         </div>

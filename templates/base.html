@@ -38,7 +38,12 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'team_list' %}">Teams</a>
             </li>
-
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'team_leaderboard' %}">Team Rankings</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'user_leaderboard' %}">User Rankings</a>
+            </li>
             {% if user.is_authenticated %}
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'my_team' %}">My Team</a>
@@ -47,10 +52,7 @@
                 <a class="nav-link" href="{% url 'create_quest' %}">Create Quest</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'my_quests' %}">My Quests</a>
-              </li>
-              <li class="nav-item">
-                <span class="nav-link">Hello, {{ user.username }}</span>
+                <a class="nav-link" href="{% url 'profile_detail' %}">{{ user.username }}</a>
               </li>
               <li class="nav-item">
                 <form method="post" action="{% url 'logout' %}" class="d-inline">

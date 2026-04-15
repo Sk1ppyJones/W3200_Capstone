@@ -18,4 +18,13 @@ urlpatterns = [
     path("teams/<int:pk>/join/", views.join_team, name="join_team"),
     path("teams/<int:pk>/leave/", views.leave_team, name="leave_team"),
     path("my-team/", views.MyTeamView.as_view(), name="my_team"),
+    path("quests/<int:pk>/start/", views.start_quest, name="start_quest"),
+    path("quests/<int:quest_pk>/steps/<int:step_pk>/submit/",
+         views.submit_step, name="submit_step"),
+    path("leaderboards/teams/", views.TeamLeaderboardView.as_view(),
+         name="team_leaderboard"),
+    path("leaderboards/users/", views.UserLeaderboardView.as_view(),
+         name="user_leaderboard"),
+    path("profile/", views.ProfileDetailView.as_view(), name="profile_detail"),
+    path("profile/edit/", views.edit_profile, name="edit_profile"),
 ]

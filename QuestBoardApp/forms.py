@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from .models import Quest, QuestStep, Feedback, Team
+from .models import Quest, QuestStep, Feedback, Team,UserProfile
 
 
 # QUEST FORM
@@ -117,3 +117,14 @@ class TeamForm(forms.ModelForm):
             "name": forms.TextInput(attrs={"class": "form-control"}),
             "description": forms.Textarea(attrs={"class": "form-control", "rows": 4}),
         }
+        
+# Profile Forms
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ["display_name", "bio"]
+        widgets = {
+            "display_name": forms.TextInput(attrs={"class": "form-control"}),
+            "bio": forms.Textarea(attrs={"class": "form-control", "rows": 4}),
+        }
+        
