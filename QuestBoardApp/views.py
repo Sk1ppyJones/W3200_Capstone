@@ -145,6 +145,7 @@ def ToggleFavoriteView(request, pk):
 
 
 class SignUpView(FormView):
+    """View for user registration"""
     template_name = "registration/signup.html"
     form_class = SignUpForm
     success_url = "/"
@@ -157,6 +158,7 @@ class SignUpView(FormView):
 
 # Team Views
 class TeamListView(ListView):
+    """View that lists all teams"""
     model = Team
     template_name = "QuestBoardApp/team_list.html"
     context_object_name = "teams"
@@ -164,6 +166,7 @@ class TeamListView(ListView):
 
 
 class TeamDetailView(DetailView):
+    """View that shows details about a team, including its members and quests."""
     model = Team
     template_name = "QuestBoardApp/team_detail.html"
     context_object_name = "team"
@@ -193,6 +196,7 @@ class TeamDetailView(DetailView):
 
 @login_required
 def create_team(request):
+    """View that allows users to create a new team."""
     existing_membership = TeamMembership.objects.filter(
         user=request.user).first()
     if existing_membership:
@@ -220,6 +224,7 @@ def create_team(request):
 @login_required
 @require_POST
 def join_team(request, pk):
+    """Allows a user to join a team if they are not already on one."""
     team = get_object_or_404(Team, pk=pk)
 
     existing_membership = TeamMembership.objects.filter(
@@ -243,6 +248,7 @@ def join_team(request, pk):
 @login_required
 @require_POST
 def leave_team(request, pk):
+    """Leaves the team specified by pk if the user is a member and not the owner."""
     team = get_object_or_404(Team, pk=pk)
 
     membership = TeamMembership.objects.filter(
@@ -262,6 +268,7 @@ def leave_team(request, pk):
 
 
 class MyTeamView(LoginRequiredMixin, TemplateView):
+    """View that shows the logged in user's team and membership details."""
     template_name = "QuestBoardApp/my_team.html"
 
     def get_context_data(self, **kwargs):
@@ -276,6 +283,7 @@ class MyTeamView(LoginRequiredMixin, TemplateView):
 @login_required
 @require_POST
 def start_quest(request, pk):
+    """Function view that allows a user to start a quest, which creates a Participation record if one doesn't already exist."""
     quest = get_object_or_404(Quest, pk=pk)
 
     participation, created = Participation.objects.get_or_create(
@@ -298,6 +306,7 @@ QUEST_BONUS = 25
 @login_required
 @require_POST
 def submit_step(request, quest_pk, step_pk):
+    """Function view that allows marking steps as done in quests"""
     quest = get_object_or_404(Quest, pk=quest_pk)
     step = get_object_or_404(QuestStep, pk=step_pk, quest=quest)
 
@@ -345,6 +354,7 @@ def submit_step(request, quest_pk, step_pk):
 
 #LeaderBoards and Points
 class TeamLeaderboardView(ListView):
+    """View that displays teams ranked by their total points."""
     model = Team
     template_name = "QuestBoardApp/team_leaderboard.html"
     context_object_name = "teams"
@@ -354,6 +364,7 @@ class TeamLeaderboardView(ListView):
 
 
 class UserLeaderboardView(ListView):
+    """View that displays users ranked by their total XP earned."""
     template_name = "QuestBoardApp/user_leaderboard.html"
     context_object_name = "users"
 
@@ -365,6 +376,7 @@ class UserLeaderboardView(ListView):
         
 # Profile Views
 class ProfileDetailView(LoginRequiredMixin, DetailView):
+    """View that shows the logged in user's profile details, including team membership and quest participation."""
     model = UserProfile
     template_name = "QuestBoardApp/profile_detail.html"
     context_object_name = "profile"
@@ -394,6 +406,7 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
     
 @login_required
 def edit_profile(request):
+    """Allows users to edit their profile information, such as bio and display name - nonfunctional."""
     profile, _ = UserProfile.objects.get_or_create(user=request.user)
 
     if request.method == "POST":

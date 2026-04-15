@@ -39,7 +39,7 @@ class QuestForm(forms.ModelForm):
             if hasattr(image, "content_type") and image.content_type not in valid_types:
                 raise ValidationError("Only JPG, PNG, or WEBP images are allowed.")
             
-            ext = os.path.splittext(image.name)[1].lower()
+            ext = os.path.splitext(image.name)[1].lower()
             if ext not in valid_extensions:
                 raise ValidationError("Invalid file extension. Only .jpg, .jpeg, .png, or .webp are allowed.")
             
