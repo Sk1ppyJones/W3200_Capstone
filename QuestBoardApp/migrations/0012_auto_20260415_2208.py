@@ -2,17 +2,33 @@
 
 import os
 from django.db import migrations
-from django.contrib.auth import get_user_model
+from django.utils import timezone
 
 def create_superuser(apps, schema_editor):
-    User = get_user_model()
-    username = os.environ.get('DJANGO_SUPERUSER_USERNAME')
-    email = os.environ.get('DJANGO_SUPERUSER_EMAIL')
-    password = os.environ.get('DJANGO_SUPERUSER_PASSWORD')
-    
-    if username and password:
-        if not User.objects.filter(username=username).exists():
-            User.objects.create_superuser(username=username, email=email, password=password)
+    User = apps.get_model("auth", "User")
+
+    username = os.environ.get("DJANGO_SUPERUSER_USERNAME")
+    email = os.environ.get("DJANGO_SUPERUSER_EMAIL")
+    password = os.environ.get("DJANGO_SUPERUSER_PASSWORD")
+
+    if not username or not email or not password:
+        return
+
+    if User.objects.filter(username=username).exists():
+        return
+
+    user = User(
+        username=username,
+        email=email,
+        is_staff=True,
+        is_superuser=True,
+        is_active=True,
+        last_login=timezone.now(),
+        date_joined=timezone.now(),
+    )
+    user.set_password(password)
+    user.save()
+
 
 
 class Migration(migrations.Migration):
