@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure--%+8a^71013wsyla-g-bg6er4arzb4mpl$%q&v0j^o+z#d&d%d
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['questboard-914e.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
