@@ -16,7 +16,8 @@ def create_superuser(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
+    atomic = False
+    
     dependencies = [
         ('QuestBoardApp', '0011_team_points'),
     ]
